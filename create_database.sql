@@ -17,20 +17,12 @@ CREATE TABLE user_status (
     PRIMARY KEY (user_id, type)
 );
 
--- HELPER TABLE TO FILTER MORE EASILY
-CREATE TABLE educational_institutions (
-    id              INT AUTO_INCREMENT PRIMARY KEY,
-    name            TEXT,
-    website         VARCHAR(255),
-    contact_email   VARCHAR(100),
-    contact_phone   VARCHAR(20)
-);
-
 CREATE TABLE job_listing (
     id                  INT AUTO_INCREMENT PRIMARY KEY,
     employer_user_id    INT,
     job_title           TEXT,
     job_description     TEXT,
+    experience_level    ENUM('BEGINNER', 'INTERMEDIATE', 'EXPERT'),
     status              ENUM('NEW', 'ONGOING', 'DONE'),
     start_date          TIMESTAMP,
     end_date            TIMESTAMP,
