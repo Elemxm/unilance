@@ -9,8 +9,7 @@ CREATE TABLE user (
 );
 
 CREATE TABLE user_status (
-    -- id          INT AUTO_INCREMENT PRIMARY KEY,
-    -- is_employee BOOLEAN,
+    id          INT AUTO_INCREMENT PRIMARY KEY,
     user_id     INT,
     type        ENUM('EMPLOYEE', 'EMPLOYER'),
     rating      INT,
@@ -18,6 +17,7 @@ CREATE TABLE user_status (
     PRIMARY KEY (user_id, type)
 );
 
+-- HELPER TABLE TO FILTER MORE EASILY
 CREATE TABLE educational_institutions (
     id              INT AUTO_INCREMENT PRIMARY KEY,
     name            TEXT,
@@ -26,9 +26,8 @@ CREATE TABLE educational_institutions (
     contact_phone   VARCHAR(20)
 );
 
-CREATE TABLE project (
+CREATE TABLE job_listing (
     id                  INT AUTO_INCREMENT PRIMARY KEY,
-    employee_user_id    INT,
     employer_user_id    INT,
     job_title           TEXT,
     job_description     TEXT,
@@ -37,14 +36,13 @@ CREATE TABLE project (
     end_date            TIMESTAMP,
     location            TEXT,
     reward              INT,
-    FOREIGN KEY (employee_user_id) REFERENCES user(id),
     FOREIGN KEY (employer_user_id) REFERENCES user(id),
 );
 
-CREATE TABLE skill_category (
+CREATE TABLE category (
     id              INT AUTO_INCREMENT PRIMARY KEY,
     category_name   VARCHAR(255) UNIQUE NOT NULL,
-    description TEXT
+    description     TEXT
 );
 
 CREATE TABLE skill (
@@ -52,18 +50,18 @@ CREATE TABLE skill (
     category_id INT,
     name        TEXT,
     description TEXT,
-    FOREIGN KEY (category_id) REFERENCES skill_category(id)
+    FOREIGN KEY (category_id) REFERENCES category(id)
 );
 
-CREATE TABLE project_skill_category (
+CREATE TABLE job_listing_category (
     id                  INT AUTO_INCREMENT PRIMARY KEY,
     project_id          INT,
-    skill_category_id   INT,
+    category_id         INT,
     FOREIGN KEY (project_id) REFERENCES project(id),
-    FOREIGN KEY (skill_category_id) REFERENCES skill_category(id)
+    FOREIGN KEY (category_id) REFERENCES category(id)
 );
 
-CREATE TABLE project_skill (
+CREATE TABLE job_listing_skill (
     id          INT AUTO_INCREMENT PRIMARY KEY,
     project_id  INT,
     skill_id    INT,
@@ -83,38 +81,36 @@ CREATE TABLE message (
 );
 
 CREATE TABLE ratings (
-    id              INT AUTO_INCREMENT PRIMARY KEY,
-    stars           INT,
-    date            TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    rating_user_id  INT,
-    rated_user_id   INT,
-    
-    --FOREIGN KEY (rating_user_id, rating_user_is_employee) REFERENCES user_status(user_id, is_employee),
-    --FOREIGN KEY (rating_user_id, !rating_user_is_employee) REFERENCES user_status(user_id, is_employee),
-    --rating_user_is_employee BOOLEAN
-
-    FOREIGN KEY (rating_user_id) REFERENCES user_status(user_id, type),
-    FOREIGN KEY (rated_user_id) REFERENCES user_status(user_id, type)
+    id                      INT AUTO_INCREMENT PRIMARY KEY,
+    stars                   INT,
+    date                    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    rating_user_status_id   INT,
+    rated_user_status_id    INT,
+    FOREIGN KEY (rating_user_status_id) REFERENCES user_status(id),
+    FOREIGN KEY (rated_user_status_id) REFERENCES user_status(id)
 );
 
-CREATE TABLE transactions (
+CREATE TABLE application (
     id                  INT AUTO_INCREMENT PRIMARY KEY,
-    project_id          INT NOT NULL,
+    job_listing_id      INT NOT NULL,
+    user_id             INT NOT NULL,
+    amount              DECIMAL(10, 2) NOT NULL,
+    created_date        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    application_status  ENUM('NEW', 'PROCESSED', 'ACCEPTED', 'REJECTED') NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user(id),
+    FOREIGN KEY (job_listing_id) REFERENCES job_listing(id)
+);
+
+CREATE TABLE contract (
+    id                  INT AUTO_INCREMENT PRIMARY KEY,
+    job_listing_id          INT NOT NULL,
     employee_user_id    INT NOT NULL,
     employer_user_id    INT NOT NULL,
     amount              DECIMAL(10, 2) NOT NULL,
     created_date        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    payment_status      ENUM('pending', 'completed', 'failed') NOT NULL,
+    payment_status      ENUM('PENDING', 'COMPLETED', 'FAILED') NOT NULL,
     payment_date        TIMESTAMP,
     FOREIGN KEY (employer_user_id) REFERENCES user(id),
     FOREIGN KEY (employee_user_id) REFERENCES user(id),
-    FOREIGN KEY (project_id) REFERENCES project(id)
+    FOREIGN KEY (job_listing_id) REFERENCES job_listing(id)
 );
-
-
---             LIST
--- 1) educational_institutions
--- 2) problem with user status + Sxolia!
--- 3) Sundesh ratings me user status
--- 4) 
--- 5)
