@@ -47,17 +47,17 @@ CREATE TABLE skill (
 
 CREATE TABLE job_listing_category (
     id                  INT AUTO_INCREMENT PRIMARY KEY,
-    project_id          INT,
+    job_listing_id          INT,
     category_id         INT,
-    FOREIGN KEY (project_id) REFERENCES project(id),
+    FOREIGN KEY (job_listing_id) REFERENCES job_listing(id),
     FOREIGN KEY (category_id) REFERENCES category(id)
 );
 
 CREATE TABLE job_listing_skill (
     id          INT AUTO_INCREMENT PRIMARY KEY,
-    project_id  INT,
+    job_listing_id  INT,
     skill_id    INT,
-    FOREIGN KEY (project_id) REFERENCES project(id),
+    FOREIGN KEY (job_listing_id) REFERENCES job_listing(id),
     FOREIGN KEY (skill_id) REFERENCES skill(id)
 );
 
