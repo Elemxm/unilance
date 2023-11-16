@@ -72,7 +72,7 @@ CREATE TABLE message (
     FOREIGN KEY (recipient_user_id) REFERENCES user(id)
 );
 
-CREATE TABLE ratings (
+CREATE TABLE rating (
     id                      INT AUTO_INCREMENT PRIMARY KEY,
     stars                   INT,
     date                    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
