@@ -86,7 +86,6 @@ CREATE TABLE application (
     id                  INT AUTO_INCREMENT PRIMARY KEY,
     job_listing_id      INT NOT NULL,
     user_id             INT NOT NULL,
-    amount              DECIMAL(10, 2) NOT NULL,
     created_date        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     application_status  ENUM('NEW', 'PROCESSED', 'ACCEPTED', 'REJECTED') NOT NULL,
     FOREIGN KEY (user_id) REFERENCES user(id),
