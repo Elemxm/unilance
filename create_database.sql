@@ -13,8 +13,7 @@ CREATE TABLE user_status (
     user_id     INT,
     type        ENUM('EMPLOYEE', 'EMPLOYER'),
     rating      INT,
-    FOREIGN KEY (user_id) REFERENCES user(id),
-    PRIMARY KEY (user_id, type)
+    FOREIGN KEY (user_id) REFERENCES user(id)
 );
 
 CREATE TABLE job_listing (
