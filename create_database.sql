@@ -100,14 +100,11 @@ CREATE TABLE application (
 
 CREATE TABLE contract (
     id                  INT AUTO_INCREMENT PRIMARY KEY,
-    job_listing_id          INT NOT NULL,
-    employee_user_id    INT NOT NULL,
-    employer_user_id    INT NOT NULL,
-    amount              DECIMAL(10, 2) NOT NULL,
+    job_listing_id      INT NOT NULL,
+    application_id      INT NOT NULL,
     created_date        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     payment_status      ENUM('PENDING', 'COMPLETED', 'FAILED') NOT NULL,
     payment_date        TIMESTAMP,
-    FOREIGN KEY (employer_user_id) REFERENCES user(id),
-    FOREIGN KEY (employee_user_id) REFERENCES user(id),
+    FOREIGN KEY (application_id) REFERENCES application(id),
     FOREIGN KEY (job_listing_id) REFERENCES job_listing(id)
 );
