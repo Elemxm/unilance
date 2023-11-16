@@ -45,6 +45,13 @@ CREATE TABLE skill (
     FOREIGN KEY (category_id) REFERENCES category(id)
 );
 
+CREATE TABLE user_skill (
+    skill_id    INT,
+    user_id     INT,
+    FOREIGN KEY (skill_id) REFERENCES skill(id),
+    FOREIGN KEY (uesr_id) REFERENCES user(id)
+);
+
 CREATE TABLE job_listing_category (
     id                  INT AUTO_INCREMENT PRIMARY KEY,
     job_listing_id          INT,
