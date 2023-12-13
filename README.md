@@ -49,7 +49,7 @@ GROUP BY u.id, u.name
 ORDER BY average_rating ASC;
 ```
 
-### 6. List users that are perfect fit for job listing with id 99 (for premium pornhub members only)
+### 6. List users that are perfect fit for job listing with id 99
 > The most complex query I could think of
 
 This query returns a list of users and then how much fit they have on my job based only on their skills.

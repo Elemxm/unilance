@@ -1,24 +1,33 @@
 CREATE TABLE user (
     id              INT AUTO_INCREMENT PRIMARY KEY,
     name            VARCHAR(255) NOT NULL,
-    date_of_birth   DATE,
     username        VARCHAR(50) NOT NULL,
     password        VARCHAR(255) NOT NULL,
     email           VARCHAR(255) UNIQUE NOT NULL,
     created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    rating          DECIMAL(2, 1),
+    location        VARCHAR(255),
 );
 
-CREATE TABLE user_status (
-    id          INT AUTO_INCREMENT PRIMARY KEY,
-    user_id     INT,
-    type        ENUM('EMPLOYEE', 'EMPLOYER'),
-    rating      DECIMAL(2, 1),
+
+CREATE TABLE employee (
+    id              INT AUTO_INCREMENT PRIMARY KEY,
+    user_id         INT,
+    date_of_birth   DATE,
+    FOREIGN KEY (user_id) REFERENCES user(id)
+);
+
+CREATE TABLE company (
+    id              INT AUTO_INCREMENT PRIMARY KEY,
+    user_id         INT,
+    founded_date    DATE,
+    VAT_number      INT,
     FOREIGN KEY (user_id) REFERENCES user(id)
 );
 
 CREATE TABLE job_listing (
     id                  INT AUTO_INCREMENT PRIMARY KEY,
-    employer_user_id    INT,
+    company_id          INT,
     job_title           VARCHAR(50),
     job_description     TEXT,
     experience_level    ENUM('BEGINNER', 'INTERMEDIATE', 'EXPERT'),
@@ -27,7 +36,7 @@ CREATE TABLE job_listing (
     end_date            TIMESTAMP,
     location            VARCHAR(255),
     reward              DECIMAL(10, 2),
-    FOREIGN KEY (employer_user_id) REFERENCES user(id),
+    FOREIGN KEY (company_id) REFERENCES company(id)
 );
 
 CREATE TABLE category (
@@ -48,7 +57,7 @@ CREATE TABLE user_skill (
     skill_id    INT,
     user_id     INT,
     FOREIGN KEY (skill_id) REFERENCES skill(id),
-    FOREIGN KEY (uesr_id) REFERENCES user(id)
+    FOREIGN KEY (user_id) REFERENCES employee(id)
 );
 
 CREATE TABLE job_listing_category (
@@ -60,9 +69,9 @@ CREATE TABLE job_listing_category (
 );
 
 CREATE TABLE job_listing_skill (
-    id          INT AUTO_INCREMENT PRIMARY KEY,
-    job_listing_id  INT,
-    skill_id    INT,
+    id                  INT AUTO_INCREMENT PRIMARY KEY,
+    job_listing_id      INT,
+    skill_id            INT,
     FOREIGN KEY (job_listing_id) REFERENCES job_listing(id),
     FOREIGN KEY (skill_id) REFERENCES skill(id)
 );
@@ -82,19 +91,19 @@ CREATE TABLE rating (
     id                      INT AUTO_INCREMENT PRIMARY KEY,
     stars                   INT,
     date                    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    rating_user_status_id   INT,
-    rated_user_status_id    INT,
-    FOREIGN KEY (rating_user_status_id) REFERENCES user_status(id),
-    FOREIGN KEY (rated_user_status_id) REFERENCES user_status(id)
+    rating_user_id          INT,
+    rated_user_id           INT,
+    FOREIGN KEY (rating_use_id) REFERENCES user(id),
+    FOREIGN KEY (rated_user_id) REFERENCES user(id)
 );
 
 CREATE TABLE application (
-    id                  INT AUTO_INCREMENT PRIMARY KEY,
-    job_listing_id      INT NOT NULL,
-    user_id             INT NOT NULL,
-    created_date        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    application_status  ENUM('NEW', 'PROCESSED', 'ACCEPTED', 'REJECTED') NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES user(id),
+    id                      INT AUTO_INCREMENT PRIMARY KEY,
+    job_listing_id          INT NOT NULL,
+    employee_id             INT NOT NULL,
+    created_date            TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    application_status      ENUM('NEW', 'PROCESSED', 'ACCEPTED', 'REJECTED') NOT NULL,
+    FOREIGN KEY (employee_id) REFERENCES employee(id),
     FOREIGN KEY (job_listing_id) REFERENCES job_listing(id)
 );
 
