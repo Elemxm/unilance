@@ -1,14 +1,36 @@
+DROP SCHEMA IF EXISTS `student`;
+CREATE SCHEMA `student`;
+USE `student`;
+
+-- MySQL dump 10.13  Distrib 8.0.25, for Win64 (x86_64)
+--
+-- Host: 127.0.0.1    Database: student
+-- ------------------------------------------------------
+-- Server version	8.0.25
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+
+DROP TABLE IF EXISTS user;
 CREATE TABLE user (
     id              INT AUTO_INCREMENT PRIMARY KEY,
     name            VARCHAR(255) NOT NULL,
     username        VARCHAR(50) NOT NULL,
     password        VARCHAR(255) NOT NULL,
-    email           VARCHAR(255) UNIQUE NOT NULL,
-    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    rating          DECIMAL(2, 1),
-    location        VARCHAR(255),
-);
-
+    email           VARCHAR(255) NOT NULL,
+    created_at      TIMESTAMP,
+    rating         DECIMAL(2, 1),
+    location        VARCHAR(255)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE employee (
     id              INT AUTO_INCREMENT PRIMARY KEY,
@@ -40,13 +62,14 @@ CREATE TABLE job_listing (
 );
 
 CREATE TABLE category (
-    category_name   VARCHAR(255) UNIQUE NOT NULL PRIMARY KEY,
+    id				INT AUTO_INCREMENT PRIMARY KEY,
+    name   			VARCHAR(255) UNIQUE NOT NULL,
     description     TEXT
 );
 
 CREATE TABLE skill (
     id              INT AUTO_INCREMENT PRIMARY KEY,
-    category_id     INT,
+    category_id 	INT,
     name            VARCHAR(50),
     description     TEXT,
     FOREIGN KEY (category_id) REFERENCES category(id)
@@ -93,7 +116,7 @@ CREATE TABLE rating (
     date                    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     rating_user_id          INT,
     rated_user_id           INT,
-    FOREIGN KEY (rating_use_id) REFERENCES user(id),
+    FOREIGN KEY (rating_user_id) REFERENCES user(id),
     FOREIGN KEY (rated_user_id) REFERENCES user(id)
 );
 
