@@ -28,7 +28,6 @@ CREATE TABLE user (
     password        VARCHAR(255) NOT NULL,
     email           VARCHAR(255) NOT NULL,
     created_at      TIMESTAMP,
-    rating         DECIMAL(2, 1),
     location        VARCHAR(255)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -116,6 +115,7 @@ CREATE TABLE rating (
     date                    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     rating_user_id          INT,
     rated_user_id           INT,
+    description				TEXT,
     FOREIGN KEY (rating_user_id) REFERENCES user(id),
     FOREIGN KEY (rated_user_id) REFERENCES user(id)
 );
