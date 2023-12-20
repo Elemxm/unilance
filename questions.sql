@@ -1,7 +1,7 @@
 -- 1
 SELECT user.id, user.name, avg(rating.stars), count(rating.rating_user_id)
 FROM user JOIN rating ON user.id = rating.rated_user_id
-WHERE user.id = 99;
+WHERE user.id = 1;
 
 -- 2
 SELECT 
@@ -15,17 +15,17 @@ JOIN
 JOIN
 	user AS rated_user ON rating.rated_user_id = rated_user.id
 WHERE 
-	rater_user.id = 99;
+	rating_user.id = 1;
 
 -- 3
 SELECT *
 FROM application JOIN employee ON application.employee_id = employee.id
-WHERE application.job_listing_id = 44
+WHERE application.job_listing_id = 4;
 
 -- 4
 SELECT 
 	job_listing.job_title, 
-	application.application_stsatus, 
+	application.application_status, 
     job_listing.company_id
 FROM 
 	application 
@@ -34,9 +34,9 @@ JOIN
 ON 
 	application.job_listing_id = job_listing.id
 WHERE 
-	employee_id = 1
+	employee_id = 1;
 
 -- 5
-SELECT uesr.username, user.email, message.message, message.date
+SELECT user.username, user.email, message.message, message.date
 FROM message JOIN user ON message.sender_user_id = user.id
-WHERE recipient_user_id = 1
+WHERE recipient_user_id = 1;
