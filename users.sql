@@ -14,4 +14,3 @@ GRANT CREATE, SELECT, INSERT ON student.* TO 'companyuser'@'%';
 CREATE USER 'adminuser'@'localhost' IDENTIFIED BY 'adminpassword';
 GRANT CREATE, DROP, ALTER ON student.* TO 'adminuser'@'localhost';
 GRANT SELECT, INSERT, UPDATE, DELETE ON student.* TO 'adminuser'@'localhost';
--- DROP USER 'adminuser'@'localhost';
