@@ -47,6 +47,19 @@ INSERT INTO `application` VALUES (1,1,1,'2023-02-01 09:00:00','PROCESSED'),(2,2,
 UNLOCK TABLES;
 
 --
+-- Temporary view structure for view `average_user_rating`
+--
+
+DROP TABLE IF EXISTS `average_user_rating`;
+/*!50001 DROP VIEW IF EXISTS `average_user_rating`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `average_user_rating` AS SELECT 
+ 1 AS `user_id`,
+ 1 AS `average_rating`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Table structure for table `category`
 --
 
@@ -131,6 +144,25 @@ LOCK TABLES `contract` WRITE;
 INSERT INTO `contract` VALUES (3,3,3,'2023-02-12 09:00:00','PENDING','2023-04-19 15:01:08'),(26,2,2,'2023-01-25 15:30:00','COMPLETED','2023-02-28 16:00:00'),(165,1,1,'2023-02-02 10:00:00','PENDING','2022-06-22 09:00:00'),(441,4,4,'2023-03-05 14:00:00','COMPLETED','2023-03-31 17:00:00'),(544,5,5,'2023-01-20 08:00:00','PENDING','2023-08-30 14:41:51');
 /*!40000 ALTER TABLE `contract` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Temporary view structure for view `contract_details`
+--
+
+DROP TABLE IF EXISTS `contract_details`;
+/*!50001 DROP VIEW IF EXISTS `contract_details`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `contract_details` AS SELECT 
+ 1 AS `contract_id`,
+ 1 AS `created_date`,
+ 1 AS `payment_status`,
+ 1 AS `payment_date`,
+ 1 AS `application_status`,
+ 1 AS `job_title`,
+ 1 AS `applicant_username`,
+ 1 AS `applicant_email`*/;
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `employee`
@@ -316,6 +348,20 @@ INSERT INTO `rating` VALUES (1,5,'2023-03-01 12:00:00',2,1,'This user did a real
 UNLOCK TABLES;
 
 --
+-- Temporary view structure for view `recent_job_listings`
+--
+
+DROP TABLE IF EXISTS `recent_job_listings`;
+/*!50001 DROP VIEW IF EXISTS `recent_job_listings`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `recent_job_listings` AS SELECT 
+ 1 AS `job_title`,
+ 1 AS `job_description`,
+ 1 AS `reward`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Table structure for table `skill`
 --
 
@@ -400,6 +446,60 @@ LOCK TABLES `user_skill` WRITE;
 INSERT INTO `user_skill` VALUES (11,102,10),(35,68,35),(44,541,75),(85,681,95),(125,351,5);
 /*!40000 ALTER TABLE `user_skill` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Final view structure for view `average_user_rating`
+--
+
+/*!50001 DROP VIEW IF EXISTS `average_user_rating`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `average_user_rating` AS select `user`.`id` AS `user_id`,avg(`rating`.`stars`) AS `average_rating` from (`user` left join `rating` on((`user`.`id` = `rating`.`rated_user_id`))) group by `user`.`id` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `contract_details`
+--
+
+/*!50001 DROP VIEW IF EXISTS `contract_details`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `contract_details` AS select `contract`.`id` AS `contract_id`,`contract`.`created_date` AS `created_date`,`contract`.`payment_status` AS `payment_status`,`contract`.`payment_date` AS `payment_date`,`application`.`application_status` AS `application_status`,`job_listing`.`job_title` AS `job_title`,`user`.`username` AS `applicant_username`,`user`.`email` AS `applicant_email` from ((((`job_listing` join `contract` on((`job_listing`.`id` = `contract`.`job_listing_id`))) join `application` on((`contract`.`application_id` = `application`.`job_listing_id`))) join `employee` on((`application`.`employee_id` = `employee`.`id`))) join `user` on((`employee`.`user_id` = `user`.`id`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `recent_job_listings`
+--
+
+/*!50001 DROP VIEW IF EXISTS `recent_job_listings`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `recent_job_listings` AS select `job_listing`.`job_title` AS `job_title`,`job_listing`.`job_description` AS `job_description`,`job_listing`.`reward` AS `reward` from `job_listing` where (`job_listing`.`status` = 'NEW') */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -410,4 +510,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-21 10:43:58
+-- Dump completed on 2023-12-21 11:09:20

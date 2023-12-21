@@ -1,5 +1,9 @@
+
 -- 1
-SELECT
+
+CREATE VIEW average_user_rating
+AS
+  SELECT
     User.id AS user_id,
     AVG(Rating.stars) AS average_rating
 FROM
@@ -10,20 +14,27 @@ GROUP BY
 
 
 -- 2 
-SELECT job_title, job_description, reward
-FROM job_listing
-WHERE job_listing.status = 'NEW';
+CREATE VIEW recent_job_listings
+AS
+	SELECT 
+		job_title, job_description, reward
+FROM 
+	job_listing
+WHERE 
+	job_listing.status = 'NEW';
 
 -- 3
-SELECT
-    contract.id AS contract_id,
-    contract.created_date,
-    contract.payment_status,
-    contract.payment_date,
-    application.application_status,
-    job_listing.job_title,
-    user.username AS applicant_username,
-    user.email AS applicant_email
+CREATE VIEW contract_details
+AS
+	SELECT
+		contract.id AS contract_id,
+		contract.created_date,
+		contract.payment_status,
+		contract.payment_date,
+		application.application_status,
+		job_listing.job_title,
+		user.username AS applicant_username,
+		user.email AS applicant_email
 FROM
     job_listing
     JOIN contract ON job_listing.id = contract.job_listing_id
